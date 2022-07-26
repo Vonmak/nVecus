@@ -1,83 +1,89 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable, tap } from 'rxjs';
+import { catchError, map, Observable, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Profile, User } from '../models/auth';
+import { ErrorsService } from './errors.service';
+import { ProfileService } from './profile.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
+  httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+  };
+
   private url = `${environment.apiUrl}`;
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient, 
+    private profileService: ProfileService, 
+    private errorService:ErrorsService
+    ) { }
 
 
   signupUser(user: User){
     return this.http.post<User>(`${this.url}/signup/`,user).pipe
-    (tap((res)=>{
-      console.log(res)
+    (catchError(this.errorService.handleError),tap((res)=>{
+      this.setToken(res);
+      this.setUser(res);
+      this.profileService.getCustomer();
+      this.profileService.getVendor();
     }))
   }
 
   login(user: User){
-    return this.http.post<User>(`${this.url}/login/`,user).pipe(tap((res)=>{
-      console.log(res);
-      // localStorage.setItem(res);
+    return this.http.post<User>(`${this.url}/login/`,user).pipe
+    (catchError(this.errorService.handleError),tap((res)=>{
       this.setToken(res);
       this.setUser(res);
-      this.getCustomer();
-      this.getVendor();
+      this.profileService.getCustomer();
+      this.profileService.getVendor();
     }))
+  }
+
+  refreshToken(): Observable<any> {
+    const token = localStorage.getItem('refreshToken');
+    return this.http.post<any>(`${this.url}/token/refresh/`,
+      { refresh: token },
+      this.httpOptions
+    );
   }
 
   setToken(token: any): void {
     this.setLocalStorage('accessToken', token.access);
     this.setLocalStorage('refreshToken', token.refresh);
+
+    // decode the token to read the user_id and expiration timestamp
+    const accessTokenParts = token.access.split('.');
+    const refreshTokenParts = token.refresh.split('.');
+    const accessToken = JSON.parse(window.atob(accessTokenParts[1]));
+    const refreshToken = JSON.parse(window.atob(refreshTokenParts[1]));
+
+    this.setLocalStorage('accessExpiry', new Date(accessToken.exp * 1000));
+    this.setLocalStorage('refreshExpiry', new Date(refreshToken.exp * 1000));
   }
   setUser(user: any):void{
     this.setLocalStorage('userid', user.id);
     this.setLocalStorage('username', user.username);
     this.setLocalStorage('role', user.roles);
   }
-  getCustomer(): Observable<Profile> {
-    return this.http.get<Profile>(`${this.url}/customer`).pipe(
-      map((profile: any) => {
-        console.log(profile)
-        this.setLocalStorage('customer', profile);
-        return profile;
-      })
-    );
-  }
-  getVendor(): Observable<Profile> {
-    return this.http.get<Profile>(`${this.url}/vendor`).pipe(
-      map((profile: any) => {
-        console.log(profile)
-        this.setLocalStorage('customer', profile);
-        return profile;
-      })
-    );
-  }
-
 
   setLocalStorage(key: string, value: any) {
     localStorage.setItem(key, value);
-    // return this.getLocalStorage(key);
+    return this.getLocalStorage(key);
+  }
+  removeLocalStorage() {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('userid');
+    localStorage.removeItem('username');
+    localStorage.removeItem('role');
+    return this.getLocalStorage('accessToken');
+  }
+  getLocalStorage(key: string):any{
+    const item = localStorage.getItem(key);
   }
 }
-
-
-// loginUser(account: loginModel){
-//   return this.http.post<any>(`${this.url}/login/`,account)
-//     .pipe(catchError(this.handleError),tap((res)=>{
-//       console.log(res);
-//       this.setToken(res);
-//       this.setUser(res);
-//       this.handleAuth(res);
-//       this.users =this.getUser();
-//       this.getProfile().subscribe();
-
-//     return this.profile.subscribe((user) => user);
-//     }))
-// }
