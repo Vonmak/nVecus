@@ -16,7 +16,7 @@ export class SignupComponent implements OnInit {
 
   onSubmit(formData: any): void {
     this.authService.signupUser(formData).subscribe((data) => {
-      console.log(data);
+      this.router.navigate(['/']);
     })
   }
 }
