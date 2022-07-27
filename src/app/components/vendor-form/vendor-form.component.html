@@ -1,0 +1,13 @@
+<p>vendor-form works!</p>
+<div>
+  <form
+    #vendorform="ngForm"
+    (ngSubmit)="onSubmit(vendorform.value)"
+  >
+  <input type = "password" name = "password" placeholder = "password" ngModel>
+  <input type = "password" name = "password" placeholder = "password" ngModel>
+    
+
+    <button class="home-btn post-btn py-2" type="submit">Update Profile</button>
+  </form>
+</div>

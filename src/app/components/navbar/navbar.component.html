@@ -1,1 +1,127 @@
-<p>navbar works!</p>
+<!-- navbar -->
+<nav class="navbar navbar-expand-lg navbar-light">
+  <div class="container-fluid">
+    <a href="/home/" class="navbar-brand" *ngIf="isAuthenticated">
+      <img
+        src="https://res.cloudinary.com/dhmbjiskt/image/upload/v1656777328/app-online-store_ocyy96.gif"
+        alt="megadalla"
+        class="navbar-image img-rounded"
+      />
+    </a>
+    <a href="" class="navbar-brand" *ngIf="!isAuthenticated">
+      <img
+        src="https://res.cloudinary.com/dhmbjiskt/image/upload/v1656777328/app-online-store_ocyy96.gif"
+        alt="megadalla"
+        class="navbar-image img-rounded"
+      />
+    </a>
+    <button
+      type="button"
+      class="navbar-toggler"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarCollapse"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <div class="navbar-nav">
+        <a
+          href=""
+          class="navbar-brand active"
+          *ngIf="!isAuthenticated"
+          id="nav-link"
+          >MEGGA DALLA</a
+        >
+        <a
+          href=""
+          class="navbar-brand active"
+          *ngIf="isAuthenticated"
+          routerLink="/home"
+          id="nav-link"
+          >MEGGA DALLA</a
+        >
+
+        <div class="dropdown">
+          <a
+            class="dropdown-toggle nav-link nav-item"
+            id="nav-link"
+            data-bs-toggle="dropdown"
+            *ngIf="isAuthenticated"
+          >
+            Links
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/home/">Products</a></li>
+            <li><a class="dropdown-item" href="/cart/">Cart</a></li>
+            <li><a class="dropdown-item" href="#">Vendor</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="navbar-nav ms-auto">
+        <a
+          href="#services"
+          class="nav-item nav-link"
+          id="nav-link"
+          *ngIf="!isAuthenticated"
+          >Services</a
+        >
+        <a
+          href="#about"
+          class="nav-item nav-link"
+          id="nav-link"
+          *ngIf="!isAuthenticated"
+          >About</a
+        >
+        <a
+          href="#contact"
+          class="nav-item nav-link"
+          id="nav-link"
+          *ngIf="!isAuthenticated"
+          >Contact</a
+        >
+        <li class="nav-item mb-2">
+          <a
+            class="nav-link"
+            style="color: #ffcc33; cursor: pointer"
+            routerLink="/cart"
+            *ngIf="isAuthenticated"
+          >
+            <i style="font-size: 20px" class="bi bi-cart-dash"></i>
+            <div
+              style="font-size: 10px; margin-left: -7px"
+              class="badge bg-danger"
+            ></div>
+          </a>
+        </li>
+        <a
+          class="nav-link nav-item user-icon"
+          style="cursor: pointer"
+          id="nav-link"
+          *ngIf="isAuthenticated"
+          routerLink="/customer"
+        >
+          <i class="bi bi-person-circle"></i>
+        </a>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            id="nav-link"
+            style="cursor: pointer"
+            routerLink="/login"
+            *ngIf="!isAuthenticated"
+            >Login</a
+          >
+        </li>
+        <a
+          class="nav-item nav-link mr-30"
+          style="cursor: pointer"
+          id="nav-link"
+          (click)="onLogout()"
+          *ngIf="isAuthenticated"
+          >Logout</a
+        >
+      </div>
+    </div>
+  </div>
+</nav>
+<!-- end navbar -->
