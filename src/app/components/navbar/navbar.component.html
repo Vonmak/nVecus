@@ -3,15 +3,15 @@
   <div class="container-fluid">
     <a href="/home/" class="navbar-brand" *ngIf="isAuthenticated">
       <img
-        src="https://res.cloudinary.com/dhmbjiskt/image/upload/v1656777328/app-online-store_ocyy96.gif"
-        alt="megadalla"
+        src="assets/images/Vector.jpeg"
+        alt="vecus"
         class="navbar-image img-rounded"
       />
     </a>
     <a href="" class="navbar-brand" *ngIf="!isAuthenticated">
       <img
-        src="https://res.cloudinary.com/dhmbjiskt/image/upload/v1656777328/app-online-store_ocyy96.gif"
-        alt="megadalla"
+        src="assets/images/Vector.jpeg"
+        alt="vecus"
         class="navbar-image img-rounded"
       />
     </a>
@@ -30,7 +30,7 @@
           class="navbar-brand active"
           *ngIf="!isAuthenticated"
           id="nav-link"
-          >MEGGA DALLA</a
+          >n-VeCus</a
         >
         <a
           href=""
@@ -38,7 +38,7 @@
           *ngIf="isAuthenticated"
           routerLink="/home"
           id="nav-link"
-          >MEGGA DALLA</a
+          >n-VeCus</a
         >
 
         <div class="dropdown">
@@ -58,6 +58,16 @@
         </div>
       </div>
       <div class="navbar-nav ms-auto">
+        <div class="nav-item nav-link">
+          <form #search="ngForm" (ngSubmit)="(search.value)">
+            <input
+              type="search"
+              name="search"
+              placeholder="Search..."
+              autocomplete="on"
+            />
+          </form>
+        </div>
         <a
           href="#services"
           class="nav-item nav-link"
@@ -77,16 +87,19 @@
           class="nav-item nav-link"
           id="nav-link"
           *ngIf="!isAuthenticated"
-          >Contact</a
+          >Contact Us</a
         >
         <li class="nav-item mb-2">
           <a
             class="nav-link"
-            style="color: #ffcc33; cursor: pointer"
+            id="nav-link"
+            style="cursor: pointer"
             routerLink="/cart"
             *ngIf="isAuthenticated"
           >
-            <i style="font-size: 20px" class="bi bi-cart-dash"></i>
+            <svg class="bi" width="20" height="20" fill="currentColor">
+              <use xlink:href="bootstrap-icons.svg#cart-dash" />
+            </svg>
             <div
               style="font-size: 10px; margin-left: -7px"
               class="badge bg-danger"
@@ -100,7 +113,9 @@
           *ngIf="isAuthenticated"
           routerLink="/customer"
         >
-          <i class="bi bi-person-circle"></i>
+          <svg class="bi" width="20" height="20" fill="currentColor">
+            <use xlink:href="bootstrap-icons.svg#person-circle" />
+          </svg>
         </a>
         <li class="nav-item">
           <a
@@ -109,7 +124,17 @@
             style="cursor: pointer"
             routerLink="/login"
             *ngIf="!isAuthenticated"
-            >Login</a
+            >Signin</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            id="nav-link"
+            style="cursor: pointer"
+            routerLink="/signup"
+            *ngIf="!isAuthenticated"
+            >Signup</a
           >
         </li>
         <a
@@ -118,7 +143,7 @@
           id="nav-link"
           (click)="onLogout()"
           *ngIf="isAuthenticated"
-          >Logout</a
+          >Signout</a
         >
       </div>
     </div>

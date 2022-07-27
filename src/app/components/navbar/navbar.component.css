@@ -1,0 +1,11 @@
+.navbar-image{
+    height: 30px;
+    width: 30px;
+    /* border-radius: 50%; */
+}
+#nav-link{
+    color: #002482;
+}
+input{
+    color: #002482;
+}
