@@ -12,6 +12,7 @@ import { CustomerComponent } from './components/customer/customer.component';
 import { VendorComponent } from './components/vendor/vendor.component';
 import { RequestInterceptor } from './interceptors/request.interceptor';
 import { CustomerFormComponent } from './components/customer-form/customer-form.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { CustomerFormComponent } from './components/customer-form/customer-form.
     SignupComponent,
     CustomerComponent,
     VendorComponent,
-    CustomerFormComponent
+    CustomerFormComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,

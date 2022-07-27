@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable, tap } from 'rxjs';
+import { Router } from '@angular/router';
+import { BehaviorSubject, catchError, map, Observable, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Profile, User } from '../models/auth';
 import { ErrorsService } from './errors.service';
@@ -15,13 +16,20 @@ export class AuthService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
 
+  private _isLoggedin = new BehaviorSubject<boolean>(false);
+  isLoggedin=this._isLoggedin.asObservable();
+
   private url = `${environment.apiUrl}`;
 
   constructor(
     private http: HttpClient, 
     private profileService: ProfileService, 
-    private errorService:ErrorsService
-    ) { }
+    private errorService:ErrorsService,
+    private router:Router
+    ) { 
+      const token = localStorage.getItem('accessToken');
+      this._isLoggedin.next(!!token);
+    }
 
 
   signupUser(user: User){
@@ -42,6 +50,13 @@ export class AuthService {
       this.profileService.getCustomer();
       this.profileService.getVendor();
     }))
+  }
+
+  logout(){
+    this.removeLocalStorage();
+    this.router.navigate(['/login']);
+    this._isLoggedin.next(false);
+    return this.isLoggedin.subscribe();
   }
 
   refreshToken(): Observable<any> {
@@ -78,9 +93,12 @@ export class AuthService {
   removeLocalStorage() {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+    localStorage.removeItem('accessExpiry');
+    localStorage.removeItem('refreshExpiry');
     localStorage.removeItem('userid');
     localStorage.removeItem('username');
     localStorage.removeItem('role');
+    localStorage.removeItem('customer');
     return this.getLocalStorage('accessToken');
   }
   getLocalStorage(key: string):any{
