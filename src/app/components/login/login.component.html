@@ -1,6 +1,60 @@
-<p>login works!</p>
-<form #login="ngForm" (ngSubmit)="onSubmit(login.value)">
-    <input type = "text" name = "username" placeholder = "username" ngModel>
-    <input type = "password" name = "password" placeholder = "password" ngModel>
-    <input type="submit" value="submit" />
-</form>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <form #login="ngForm" (ngSubmit)="onSubmit(login)">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input
+            #username="ngModel"
+            type="text"
+            name="username"
+            placeholder="username"
+            class="form-control"
+            required
+            ngModel
+            [ngClass]="{
+              'is-invalid':
+                (username.errors && username.touched) ||
+                (login.submitted && !login.value.username)
+            }"
+          />
+
+          <span
+            class="help-block"
+            *ngIf="
+              (username.invalid && (username.dirty || username.touched)) ||
+              (login.submitted && !login.value.username)
+            "
+            >This field is Required!</span
+          >
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            #password="ngModel"
+            type="password"
+            name="password"
+            placeholder="password"
+            class="form-control"
+            required
+            ngModel
+            [ngClass]="{
+              'is-invalid':
+                (password.errors && password.touched) ||
+                (login.submitted && !login.value.password)
+            }"
+          />
+          <span
+            class="help-block"
+            *ngIf="
+              (password.invalid && (password.dirty || password.touched)) ||
+              (login.submitted && !login.value.password)
+            "
+            >This field is Required!</span
+          >
+        </div>
+        <input type="submit" value="submit" class="btn btn-sm" [disabled]="!login.valid" />
+      </form>
+    </div>
+  </div>
+</div>

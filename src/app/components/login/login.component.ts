@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -14,8 +15,8 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onSubmit(formData: any){
-    this.authService.login(formData).subscribe((data) => {
+  onSubmit(formData: NgForm){
+    this.authService.login(formData.value).subscribe((data) => {
       console.log(data);
       if (data.roles === 'vendor') {
         // this.authService.getProfile().subscribe((profile) => {

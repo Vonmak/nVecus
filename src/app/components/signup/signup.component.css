@@ -1,0 +1,25 @@
+input{
+    margin-bottom: 10px;
+}
+label{
+    color: #002482;
+}
+.help-block{
+    color: red;
+}
+.btn{
+    background: #002482;
+    color: #fff;
+}
+::placeholder { 
+    color: #002482;
+    opacity: 0.5;
+}
+  
+/* :-ms-input-placeholder { 
+    color: #002482;
+} */
+  
+/* ::-ms-input-placeholder {
+    color: #002482;
+} */

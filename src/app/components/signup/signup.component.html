@@ -1,12 +1,139 @@
-<p>signup works!</p>
-<form #signup="ngForm" (ngSubmit)="onSubmit(signup.value)">
-    <input type = "text" name = "email" placeholder = "email" ngModel>
-    <input type = "text" name = "username" placeholder = "username" ngModel>
-    <select name="roles" placeholder="Choose Role" ngModel>
-        <option value="customer">Customer</option>
-        <option value="vendor">Vendor</option>
-    </select>
-    <input type = "tel" name = "phone" placeholder = "phone" ngModel>
-    <input type = "password" name = "password" placeholder = "password" ngModel>
-    <input type="submit" value="submit" />
-</form>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-6">
+      <form #signup="ngForm" (ngSubmit)="onSubmit(signup)">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input
+            #username="ngModel"
+            type="text"
+            name="username"
+            placeholder="Username"
+            class="form-control"
+            required
+            ngModel
+            [ngClass]="{
+              'is-invalid':
+                (username.errors && username.touched) ||
+                (signup.submitted && !signup.value.username)
+            }"
+          />
+
+          <span
+            class="help-block"
+            *ngIf="
+              (username.invalid && (username.dirty || username.touched)) ||
+              (signup.submitted && !signup.value.username)
+            "
+            >This field is Required!</span
+          >
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            #email="ngModel"
+            type="email"
+            name="email"
+            placeholder="Email"
+            class="form-control"
+            required
+            ngModel
+            [ngClass]="{
+              'is-invalid':
+                (email.errors && email.touched) ||
+                (signup.submitted && !signup.value.email)
+            }"
+          />
+          <span
+            class="help-block"
+            *ngIf="
+              (email.invalid && (email.dirty || email.touched)) ||
+              (signup.submitted && !signup.value.email)
+            "
+            >Enter a valid email!</span
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="roles">Roles</label>
+          <select
+            #roles="ngModel"
+            name="roles"
+            class="form-control"
+            required
+            ngModel
+            [ngClass]="{
+              'is-invalid':
+                (roles.errors && roles.touched) ||
+                (signup.submitted && !signup.value.roles)
+            }"
+          >
+            <option value="" disabled selected>Choose Role</option>
+            <option value="customer">Customer</option>
+            <option value="vendor">Vendor</option>
+          </select>
+          <span
+            class="help-block"
+            *ngIf="
+              (roles.invalid && (roles.dirty || roles.touched)) ||
+              (signup.submitted && !signup.value.roles)
+            "
+            >This field is Required!</span
+          >
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone</label>
+          <input
+            #phone="ngModel"
+            type="tel"
+            name="phone"
+            placeholder="Phone"
+            class="form-control"
+            [pattern]="phonepattern"
+            required
+            ngModel
+            [ngClass]="{
+              'is-invalid':
+                (phone.errors && phone.touched) ||
+                (signup.submitted && !signup.value.phone)
+            }"
+          />
+          <span
+            class="help-block"
+            *ngIf="(phone.dirty || phone.touched)&& phone.errors?.['required'] || (signup.submitted && !signup.value.phone)"
+            >Please enter Phone number!</span
+          ><span class="help-block" *ngIf="phone.errors?.['pattern']">
+            Phone number not valid.
+          </span>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            #password="ngModel"
+            type="password"
+            name="password"
+            placeholder="Password"
+            class="form-control"
+            required
+            ngModel
+            [ngClass]="{
+              'is-invalid':
+                (password.errors && password.touched) ||
+                (signup.submitted && !signup.value.password)
+            }"
+          />
+          <span
+            class="help-block"
+            *ngIf="
+              (password.invalid && (password.dirty || password.touched)) ||
+              (signup.submitted && !signup.value.password)
+            "
+            >This field is Required!</span
+          >
+        </div>
+
+        <input type="submit" value="submit" class="btn btn-sm" [disabled]="!signup.valid" />
+      </form>
+    </div>
+  </div>
+</div>
